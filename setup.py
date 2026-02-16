@@ -1,7 +1,6 @@
 # coding=utf-8
 
-########################################################################################################################
-### Do not forget to adjust the following variables to your own plugin.
+# Do not forget to adjust the following variables to your own plugin.
 
 # The plugin's identifier, has to be unique
 plugin_identifier = "lywsd03mmc"
@@ -35,9 +34,9 @@ plugin_license = "AGPLv3"
 # Any additional requirements besides OctoPrint should be listed here
 plugin_requires = ["lywsd03mmc>=1.1.1"]
 
-### --------------------------------------------------------------------------------------------------------------------
-### More advanced options that you usually shouldn't have to touch follow after this point
-### --------------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------------------------------
+# More advanced options that you usually shouldn't have to touch follow after this point
+# --------------------------------------------------------------------------------------------------------------------
 
 # Additional package data to install for this plugin. The subfolders "templates", "static" and "translations" will
 # already be installed automatically if they exist. Note that if you add something here you'll also need to update
@@ -63,11 +62,11 @@ additional_setup_parameters = {}
 
 ########################################################################################################################
 
-from setuptools import setup
+from setuptools import setup  # noqa: E402
 
 try:
     import octoprint_setuptools
-except:
+except ImportError:  # noqa: E722
     print("Could not import OctoPrint's setuptools, are you sure you are running that under "
           "the same python installation that OctoPrint is installed under?")
     import sys
