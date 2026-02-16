@@ -41,7 +41,7 @@ class LYWSD03MMCPlugin(
         mac_address = self._settings.get(["mac_address"])
 
         if mac_address:
-            self._logger.info(f"Starting sensor monitoring for MAC: {mac_address}")
+            self._logger.info("Starting sensor monitoring for MAC: %s", mac_address)
             self._start_monitoring()
         else:
             self._logger.warning("No MAC address configured. Please configure the sensor MAC address in settings.")
@@ -84,7 +84,7 @@ class LYWSD03MMCPlugin(
             try:
                 self._read_sensor()
             except Exception as e:
-                self._logger.error(f"Error reading sensor: {e}")
+                self._logger.error("Error reading sensor: %s", e)
 
             # Sleep for the configured interval
             update_interval = self._settings.get_int(["update_interval"])
@@ -104,24 +104,30 @@ class LYWSD03MMCPlugin(
 
             # Create or reuse client
             if self._client is None:
-                self._logger.info(f"Connecting to sensor at {mac_address}")
-                self._client = Lywsd03mmcClient(mac_address)
+                self._logger.info("Connecting to sensor at %s", mac_address)
+                try:
+                    self._client = Lywsd03mmcClient(mac_address)
+                except Exception as e:
+                    self._logger.error("Failed to connect to sensor: %s", e)
+                    return
 
             # Read sensor data
-            data = self._client.data
-            self._temperature = data.temperature
-            self._humidity = data.humidity
-            self._battery = data.battery
-            self._last_update = time.time()
+            try:
+                data = self._client.data
+                self._temperature = data.temperature
+                self._humidity = data.humidity
+                self._battery = data.battery
+                self._last_update = time.time()
 
-            self._logger.debug(f"Sensor data - Temp: {self._temperature}°C, Humidity: {self._humidity}%, Battery: {self._battery}%")
+                self._logger.debug("Sensor data - Temp: %.1f°C, Humidity: %d%%, Battery: %d%%",
+                                   self._temperature, self._humidity, self._battery)
+            except Exception as e:
+                self._logger.error("Failed to read sensor data: %s", e)
+                # Reset client on data read error to force reconnection on next attempt
+                self._client = None
 
         except ImportError:
             self._logger.error("lywsd03mmc library not installed. Please install it: pip install lywsd03mmc")
-        except Exception as e:
-            self._logger.error(f"Failed to read sensor: {e}")
-            # Reset client on error to force reconnection on next attempt
-            self._client = None
 
     # Temperature hook
 
@@ -165,7 +171,7 @@ class LYWSD03MMCPlugin(
 
 
 __plugin_name__ = "LYWSD03MMC Sensor"
-__plugin_pythoncompat__ = ">=3,<4"  # Only Python 3
+__plugin_pythoncompat__ = ">=3.7,<4"  # Python 3.7+
 __plugin_implementation__ = LYWSD03MMCPlugin()
 
 __plugin_hooks__ = {

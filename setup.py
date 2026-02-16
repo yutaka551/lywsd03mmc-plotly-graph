@@ -66,7 +66,7 @@ from setuptools import setup  # noqa: E402
 
 try:
     import octoprint_setuptools
-except ImportError:  # noqa: E722
+except ImportError:
     print("Could not import OctoPrint's setuptools, are you sure you are running that under "
           "the same python installation that OctoPrint is installed under?")
     import sys
