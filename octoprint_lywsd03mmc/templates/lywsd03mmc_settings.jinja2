@@ -1,0 +1,67 @@
+<div class="form-horizontal">
+    <h3>{{ _('LYWSD03MMC Sensor Settings') }}</h3>
+    
+    <div class="control-group">
+        <label class="control-label">{{ _('Sensor MAC Address') }}</label>
+        <div class="controls">
+            <input type="text" class="input-block-level" data-bind="value: settings.plugins.lywsd03mmc.mac_address" placeholder="A4:C1:38:12:34:56">
+            <span class="help-block">{{ _('The Bluetooth MAC address of your LYWSD03MMC sensor. You can find this in the Xiaomi Home app or by running "sudo hcitool lescan".') }}</span>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label class="control-label">{{ _('Update Interval (seconds)') }}</label>
+        <div class="controls">
+            <input type="number" class="input-block-level" data-bind="value: settings.plugins.lywsd03mmc.update_interval" min="10" max="3600">
+            <span class="help-block">{{ _('How often to poll the sensor for new data (minimum 10 seconds recommended).') }}</span>
+        </div>
+    </div>
+    
+    <h4>{{ _('Display Options') }}</h4>
+    
+    <div class="control-group">
+        <div class="controls">
+            <label class="checkbox">
+                <input type="checkbox" data-bind="checked: settings.plugins.lywsd03mmc.display_humidity">
+                {{ _('Display Humidity') }}
+            </label>
+            <span class="help-block">{{ _('Show humidity readings in the graph.') }}</span>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <div class="controls">
+            <label class="checkbox">
+                <input type="checkbox" data-bind="checked: settings.plugins.lywsd03mmc.display_battery">
+                {{ _('Display Battery Level') }}
+            </label>
+            <span class="help-block">{{ _('Show battery level in the graph.') }}</span>
+        </div>
+    </div>
+    
+    <h4>{{ _('Graph Labels') }}</h4>
+    
+    <div class="control-group">
+        <label class="control-label">{{ _('Temperature Label') }}</label>
+        <div class="controls">
+            <input type="text" class="input-block-level" data-bind="value: settings.plugins.lywsd03mmc.temp_label">
+            <span class="help-block">{{ _('Label for temperature readings in the graph.') }}</span>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label class="control-label">{{ _('Humidity Label') }}</label>
+        <div class="controls">
+            <input type="text" class="input-block-level" data-bind="value: settings.plugins.lywsd03mmc.humidity_label">
+            <span class="help-block">{{ _('Label for humidity readings in the graph.') }}</span>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label class="control-label">{{ _('Battery Label') }}</label>
+        <div class="controls">
+            <input type="text" class="input-block-level" data-bind="value: settings.plugins.lywsd03mmc.battery_label">
+            <span class="help-block">{{ _('Label for battery level in the graph.') }}</span>
+        </div>
+    </div>
+</div>

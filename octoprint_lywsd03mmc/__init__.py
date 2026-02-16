@@ -1,0 +1,174 @@
+# coding=utf-8
+from __future__ import absolute_import
+
+import octoprint.plugin
+import threading
+import time
+
+
+class LYWSD03MMCPlugin(
+    octoprint.plugin.SettingsPlugin,
+    octoprint.plugin.AssetPlugin,
+    octoprint.plugin.TemplatePlugin,
+    octoprint.plugin.StartupPlugin
+):
+    def __init__(self):
+        self._temperature = None
+        self._humidity = None
+        self._battery = None
+        self._last_update = 0
+        self._update_thread = None
+        self._stop_thread = False
+        self._client = None
+
+    ##~~ SettingsPlugin mixin
+
+    def get_settings_defaults(self):
+        return dict(
+            mac_address="",
+            update_interval=60,  # seconds
+            display_humidity=True,
+            display_battery=False,
+            temp_label="LYWSD03MMC Temp",
+            humidity_label="LYWSD03MMC Humidity",
+            battery_label="LYWSD03MMC Battery"
+        )
+
+    ##~~ StartupPlugin mixin
+
+    def on_after_startup(self):
+        self._logger.info("LYWSD03MMC Plugin started")
+        mac_address = self._settings.get(["mac_address"])
+        
+        if mac_address:
+            self._logger.info(f"Starting sensor monitoring for MAC: {mac_address}")
+            self._start_monitoring()
+        else:
+            self._logger.warning("No MAC address configured. Please configure the sensor MAC address in settings.")
+
+    ##~~ AssetPlugin mixin
+
+    def get_assets(self):
+        return dict(
+            js=[],
+            css=[],
+            less=[]
+        )
+
+    ##~~ TemplatePlugin mixin
+
+    def get_template_configs(self):
+        return [
+            dict(type="settings", custom_bindings=False)
+        ]
+
+    ##~~ Sensor monitoring
+
+    def _start_monitoring(self):
+        """Start the sensor monitoring thread"""
+        if self._update_thread is None or not self._update_thread.is_alive():
+            self._stop_thread = False
+            self._update_thread = threading.Thread(target=self._monitor_sensor)
+            self._update_thread.daemon = True
+            self._update_thread.start()
+
+    def _stop_monitoring(self):
+        """Stop the sensor monitoring thread"""
+        self._stop_thread = True
+        if self._update_thread:
+            self._update_thread.join(timeout=5)
+
+    def _monitor_sensor(self):
+        """Monitor the sensor and update values periodically"""
+        while not self._stop_thread:
+            try:
+                self._read_sensor()
+            except Exception as e:
+                self._logger.error(f"Error reading sensor: {e}")
+            
+            # Sleep for the configured interval
+            update_interval = self._settings.get_int(["update_interval"])
+            time.sleep(update_interval)
+
+    def _read_sensor(self):
+        """Read data from the LYWSD03MMC sensor"""
+        mac_address = self._settings.get(["mac_address"])
+        
+        if not mac_address:
+            self._logger.warning("MAC address not configured")
+            return
+        
+        try:
+            # Import here to avoid issues if the library isn't installed
+            from lywsd03mmc import Lywsd03mmcClient
+            
+            # Create or reuse client
+            if self._client is None:
+                self._logger.info(f"Connecting to sensor at {mac_address}")
+                self._client = Lywsd03mmcClient(mac_address)
+            
+            # Read sensor data
+            data = self._client.data
+            self._temperature = data.temperature
+            self._humidity = data.humidity
+            self._battery = data.battery
+            self._last_update = time.time()
+            
+            self._logger.debug(f"Sensor data - Temp: {self._temperature}°C, Humidity: {self._humidity}%, Battery: {self._battery}%")
+            
+        except ImportError:
+            self._logger.error("lywsd03mmc library not installed. Please install it: pip install lywsd03mmc")
+        except Exception as e:
+            self._logger.error(f"Failed to read sensor: {e}")
+            # Reset client on error to force reconnection on next attempt
+            self._client = None
+
+    ##~~ Temperature hook
+
+    def get_temperature_data(self, comm, parsed_temps):
+        """Hook to inject sensor data into temperature graph"""
+        if self._temperature is not None:
+            # Add temperature as actual value (target set to 0)
+            temp_label = self._settings.get(["temp_label"])
+            parsed_temps[temp_label] = (self._temperature, 0)
+            
+            # Add humidity if enabled
+            if self._settings.get_boolean(["display_humidity"]) and self._humidity is not None:
+                humidity_label = self._settings.get(["humidity_label"])
+                parsed_temps[humidity_label] = (self._humidity, 0)
+            
+            # Add battery if enabled
+            if self._settings.get_boolean(["display_battery"]) and self._battery is not None:
+                battery_label = self._settings.get(["battery_label"])
+                parsed_temps[battery_label] = (self._battery, 0)
+        
+        return parsed_temps
+
+    ##~~ Softwareupdate hook
+
+    def get_update_information(self):
+        return dict(
+            lywsd03mmc=dict(
+                displayName="LYWSD03MMC Plugin",
+                displayVersion=self._plugin_version,
+
+                # version check: github repository
+                type="github_release",
+                user="yutaka551",
+                repo="lywsd03mmc-plotly-graph",
+                current=self._plugin_version,
+
+                # update method: pip
+                pip="https://github.com/yutaka551/lywsd03mmc-plotly-graph/archive/{target_version}.zip"
+            )
+        )
+
+
+__plugin_name__ = "LYWSD03MMC Sensor"
+__plugin_pythoncompat__ = ">=3,<4"  # Only Python 3
+__plugin_implementation__ = LYWSD03MMCPlugin()
+
+__plugin_hooks__ = {
+    "octoprint.comm.protocol.temperatures.received": __plugin_implementation__.get_temperature_data,
+    "octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
+}
