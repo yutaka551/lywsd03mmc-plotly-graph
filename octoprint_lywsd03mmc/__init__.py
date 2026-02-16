@@ -109,6 +109,10 @@ class LYWSD03MMCPlugin(
                     self._client = Lywsd03mmcClient(mac_address)
                 except Exception as e:
                     self._logger.error("Failed to connect to sensor: %s", e)
+                    # Reset sensor data to indicate connection failure
+                    self._temperature = None
+                    self._humidity = None
+                    self._battery = None
                     return
 
             # Read sensor data
@@ -125,9 +129,17 @@ class LYWSD03MMCPlugin(
                 self._logger.error("Failed to read sensor data: %s", e)
                 # Reset client on data read error to force reconnection on next attempt
                 self._client = None
+                # Reset sensor data to indicate failure
+                self._temperature = None
+                self._humidity = None
+                self._battery = None
 
         except ImportError:
             self._logger.error("lywsd03mmc library not installed. Please install it: pip install lywsd03mmc")
+            # Reset sensor data to indicate failure
+            self._temperature = None
+            self._humidity = None
+            self._battery = None
 
     # Temperature hook
 
