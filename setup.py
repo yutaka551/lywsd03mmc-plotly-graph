@@ -3,14 +3,14 @@
 # Do not forget to adjust the following variables to your own plugin.
 
 # The plugin's identifier, has to be unique
-plugin_identifier = "lywsd03mmc"
+plugin_identifier = "plotly_graph_lywsd03mmc"
 
 # The plugin's python package, should be "octoprint_<plugin identifier>", has to be unique
-plugin_package = "octoprint_lywsd03mmc"
+plugin_package = "octoprint_plotly_graph_lywsd03mmc"
 
 # The plugin's human readable name. Can be overwritten within OctoPrint's internal data via __plugin_name__ in the
 # plugin module
-plugin_name = "OctoPrint-LYWSD03MMC"
+plugin_name = "OctoPrint-PlotlyGraph-LYWSD03MMC"
 
 # The plugin's version. Can be overwritten within OctoPrint's internal data via __plugin_version__ in the plugin module
 plugin_version = "1.0.0"
