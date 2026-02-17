@@ -24,6 +24,18 @@ This plugin integrates Xiaomi Mijia LYWSD03MMC Bluetooth temperature and humidit
 
 ## Installation
 
+### 1. Install PlotlyTempGraph Plugin (Required)
+
+This plugin requires the [PlotlyTempGraph plugin](https://github.com/jneilliii/OctoPrint-PlotlyTempGraph) to display sensor data in the temperature graph.
+
+Install PlotlyTempGraph via the Plugin Manager or using this URL:
+
+```
+https://github.com/jneilliii/OctoPrint-PlotlyTempGraph/archive/master.zip
+```
+
+### 2. Install This Plugin
+
 Install via the bundled [Plugin Manager](https://docs.octoprint.org/en/master/bundledplugins/pluginmanager.html)
 or manually using this URL:
 
@@ -31,7 +43,9 @@ or manually using this URL:
 https://github.com/yutaka551/lywsd03mmc-plotly-graph/archive/master.zip
 ```
 
-**Note:** After installation, you may need to install system dependencies:
+### 3. Install System Dependencies
+
+After installation, you may need to install system dependencies:
 
 ```bash
 sudo apt-get install python3-pip libglib2.0-dev
