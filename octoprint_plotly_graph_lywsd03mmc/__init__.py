@@ -154,8 +154,8 @@ class LYWSD03MMCPlugin(
 
     def get_update_information(self):
         return dict(
-            lywsd03mmc=dict(
-                displayName="LYWSD03MMC Plugin",
+            plotly_graph_lywsd03mmc=dict(
+                displayName="PlotlyGraph LYWSD03MMC Plugin",
                 displayVersion=self._plugin_version,
 
                 # version check: github repository
@@ -170,7 +170,7 @@ class LYWSD03MMCPlugin(
         )
 
 
-__plugin_name__ = "LYWSD03MMC Sensor"
+__plugin_name__ = "PlotlyGraph LYWSD03MMC Sensor"
 __plugin_pythoncompat__ = ">=3.7,<4"
 __plugin_implementation__ = LYWSD03MMCPlugin()
 
