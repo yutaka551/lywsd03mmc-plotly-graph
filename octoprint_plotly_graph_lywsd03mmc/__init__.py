@@ -145,6 +145,23 @@ class LYWSD03MMCPlugin(
             self._humidity = None
             self._battery = None
 
+    # Callback for temperature and humidity data
+    def callback(self, comm, parsed_temps):
+        """Inject sensor data into the temperature graph"""
+        if self._temperature is not None:
+            temp_label = self._settings.get(["temp_label"])
+            parsed_temps.update({temp_label: (self._temperature, None)})
+
+            if self._settings.get_boolean(["display_humidity"]) and self._humidity is not None:
+                humidity_label = self._settings.get(["humidity_label"])
+                parsed_temps.update({humidity_label: (self._humidity, None)})
+
+            if self._settings.get_boolean(["display_battery"]) and self._battery is not None:
+                battery_label = self._settings.get(["battery_label"])
+                parsed_temps.update({battery_label: (self._battery, None)})
+
+        return parsed_temps
+
     # Temperature hook
 
     def get_temperature_data(self, comm, parsed_temps):
@@ -191,6 +208,6 @@ __plugin_pythoncompat__ = ">=3.7,<4"
 __plugin_implementation__ = LYWSD03MMCPlugin()
 
 __plugin_hooks__ = {
-    "octoprint.comm.protocol.temperatures.received": __plugin_implementation__.get_temperature_data,
+    "octoprint.comm.protocol.temperatures.received": (callback, 1),
     "octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
 }
