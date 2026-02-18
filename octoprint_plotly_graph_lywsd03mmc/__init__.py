@@ -6,7 +6,7 @@ import threading
 import time
 
 
-class LYWSD03MMCPlugin(
+class PlotlyGraphLywsd03mmcPlugin(
     octoprint.plugin.SettingsPlugin,
     octoprint.plugin.AssetPlugin,
     octoprint.plugin.TemplatePlugin,
@@ -187,7 +187,7 @@ class LYWSD03MMCPlugin(
 
     def get_update_information(self):
         return dict(
-            plotly_graph_lywsd03mmc=dict(
+            plotlyGraphLywsd03mmc=dict(
                 displayName="PlotlyGraph LYWSD03MMC Plugin",
                 displayVersion=self._plugin_version,
 
@@ -205,10 +205,10 @@ class LYWSD03MMCPlugin(
 
 __plugin_name__ = "PlotlyGraph LYWSD03MMC Sensor"
 __plugin_pythoncompat__ = ">=3.7,<4"
-__plugin_implementation__ = LYWSD03MMCPlugin()
+__plugin_implementation__ = PlotlyGraphLywsd03mmcPlugin()
 __plugin_version__ = "0.1.0"
 
 __plugin_hooks__ = {
-    "octoprint.comm.protocol.temperatures.received": (callback, 1),
+    "octoprint.comm.protocol.temperatures.received": (__plugin_implementation__.callback, 1),
     "octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
 }
