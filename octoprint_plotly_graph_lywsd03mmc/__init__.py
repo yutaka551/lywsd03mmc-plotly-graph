@@ -206,6 +206,7 @@ class LYWSD03MMCPlugin(
 __plugin_name__ = "PlotlyGraph LYWSD03MMC Sensor"
 __plugin_pythoncompat__ = ">=3.7,<4"
 __plugin_implementation__ = LYWSD03MMCPlugin()
+__plugin_version__ = "0.1.0"
 
 __plugin_hooks__ = {
     "octoprint.comm.protocol.temperatures.received": (callback, 1),
