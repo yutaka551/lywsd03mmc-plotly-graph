@@ -1,4 +1,6 @@
-# OctoPrint-LYWSD03MMC
+
+# OctoPrint-PlotlyGraph-LYWSD03MMC
+
 
 OctoPrint plugin to add LYWSD03MMC temperature and humidity sensor data to PlotlyTempGraph.
 
@@ -139,9 +141,10 @@ Or run OctoPrint with appropriate permissions (not recommended for production).
 
 This plugin uses the `lywsd03mmc` Python library to communicate with the sensor via Bluetooth Low Energy (BLE). It runs a background thread that periodically polls the sensor and injects the data into OctoPrint's temperature reporting system using the `octoprint.comm.protocol.temperatures.received` hook, making it compatible with PlotlyTempGraph and other temperature-aware plugins.
 
+
 ## License
 
-Licensed under the GNU Affero General Public License v3.0.
+Licensed under the MIT License. See the LICENSE file for details.
 
 ## Support
 
