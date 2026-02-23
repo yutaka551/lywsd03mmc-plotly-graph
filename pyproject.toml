@@ -7,7 +7,7 @@ name = "OctoPrint-PlotlyGraph-LYWSD03MMC"
 version = "0.1.0"
 description = "Plugin to add LYWSD03MMC temperature and humidity sensor data to PlotlyTempGraph"
 authors = [
-    {name = "yutaka551", email = "yutaka551@users.noreply.github.com"}
+    {name = "yutaka551", email = "yutaka551butaman@gmail.com"}
 ]
 readme = {file = "README.md", content-type = "text/markdown"}
 license = {text = "MIT"}
