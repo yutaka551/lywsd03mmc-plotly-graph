@@ -1,9 +1,9 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "OctoPrint-PlotlyGraph-LYWSD03MMC"
+name = "lywsd03mmc-plotly-graph"
 version = "0.1.0"
 description = "Plugin to add LYWSD03MMC temperature and humidity sensor data to PlotlyTempGraph"
 authors = [
