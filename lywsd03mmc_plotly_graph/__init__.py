@@ -8,7 +8,7 @@ import time
 from lywsd03mmc import Lywsd03mmcClient
 
 
-class PlotlyGraphLywsd03mmcPlugin(
+class Lywsd03mmcPlotlyGraphPlugin(
     octoprint.plugin.SettingsPlugin,
     octoprint.plugin.TemplatePlugin,
     octoprint.plugin.StartupPlugin
@@ -168,8 +168,8 @@ class PlotlyGraphLywsd03mmcPlugin(
 
     def get_update_information(self):
         return dict(
-            plotly_graph_lywsd03mmc=dict(
-                displayName="PlotlyGraph LYWSD03MMC Plugin",
+            lywsd03mmc_plotly_graph=dict(
+                displayName="lywsd03mmc-plotly-graph",
                 displayVersion=self._plugin_version,
 
                 # version check: github repository
@@ -184,9 +184,9 @@ class PlotlyGraphLywsd03mmcPlugin(
         )
 
 
-__plugin_name__ = "LYWSD03MMC Sensor Plugin for PlotlyGraph"
+__plugin_name__ = "lywsd03mmc-plotly-graph"
 __plugin_pythoncompat__ = ">=3.7,<4"
-__plugin_implementation__ = PlotlyGraphLywsd03mmcPlugin()
+__plugin_implementation__ = Lywsd03mmcPlotlyGraphPlugin()
 __plugin_version__ = "0.1.0"
 
 __plugin_hooks__ = {
