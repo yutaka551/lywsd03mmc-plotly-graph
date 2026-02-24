@@ -23,12 +23,12 @@ include-package-data = true
 
 [tool.setuptools.packages.find]
 include = [
-    "octoprint_plotly_graph_lywsd03mmc",
-    "octoprint_plotly_graph_lywsd03mmc.*"
+    "lywsd03mmc_plotly_graph",
+    "lywsd03mmc_plotly_graph.*"
 ]
 
 [project.entry-points."octoprint.plugin"]
-plotly_graph_lywsd03mmc = "octoprint_plotly_graph_lywsd03mmc"
+plotly_graph_lywsd03mmc = "lywsd03mmc_plotly_graph"
 
 [project.urls]
 Homepage = "https://github.com/yutaka551/lywsd03mmc-plotly-graph"
