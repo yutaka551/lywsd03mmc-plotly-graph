@@ -184,7 +184,7 @@ class PlotlyGraphLywsd03mmcPlugin(
         )
 
 
-__plugin_name__ = "PlotlyGraph LYWSD03MMC Sensor"
+__plugin_name__ = "LYWSD03MMC Sensor Plugin for PlotlyGraph"
 __plugin_pythoncompat__ = ">=3.7,<4"
 __plugin_implementation__ = PlotlyGraphLywsd03mmcPlugin()
 __plugin_version__ = "0.1.0"
