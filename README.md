@@ -1,5 +1,5 @@
 
-# OctoPrint-PlotlyGraph-LYWSD03MMC
+# OctoPrint-LYWSD03MMC-Plotly-Graph
 
 
 OctoPrint plugin to add LYWSD03MMC temperature and humidity sensor data to PlotlyTempGraph.
