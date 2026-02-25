@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "OctoPrint-LYWSD03MMC-PlotlyGraph"
+version = "0.1.0"
+description = "Plugin to add LYWSD03MMC temperature and humidity sensor data to PlotlyTempGraph"
+authors = [
+    {name = "yutaka551", email = "yutaka551butaman@gmail.com"}
+]
+readme = {file = "README.md", content-type = "text/markdown"}
+dynamic = [
+    "license"
+]
+
+requires-python = ">=3.7, <4"
+
+# any additional requirements (besides OctoPrint) should be listed here
+dependencies = [
+    "lywsd03mmc>=0.1.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/yutaka551/lywsd03mmc-plotly-graph"
+
+[project.entry-points."octoprint.plugin"]
+lywsd03mmc_plotly_graph = "octoprint_lywsd03mmc_plotly_graph"
+
+# pyproject.toml の該当設定についての解説:
+# - include-package-data = true
+#   setuptools に対して、パッケージに含める非 Python ファイルを配布アーカイブに含めるよう指示します。
+#   実際にどのファイルを含めるかは MANIFEST.in や package_data の指定に依存します。
+#   これによりテンプレート、静的リソース、設定ファイルなどがビルド／配布物に含まれます。
+#
+# - [tool.setuptools.packages.find].include
+#   setuptools の自動パッケージ検索で含めるパッケージ名フィルタのリストです。
+#   ここではトップレベルのパッケージ名とそのサブパッケージ（ワイルドカード）を指定しており、
+#   指定された名前にマッチするパッケージのみがディストリビューションに含まれます。
+#
+# 使いどころと注意:
+# - プロジェクトが配布に含める静的ファイルやテンプレートを持つ場合、include-package-data=true と
+#   適切な MANIFEST.in / package_data 設定を組み合わせる必要があります。
+# - packages.find.include によるフィルタでパッケージが抜け落ちないよう、名前を正確に指定してください。
+# - これらの設定はビルド／インストール時に適用されます（pip install 等）。
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = [
+    "octoprint_lywsd03mmc_plotly_graph",
+    "octoprint_lywsd03mmc_plotly_graph.*"
+]

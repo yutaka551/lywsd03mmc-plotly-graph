@@ -1,5 +1,2 @@
 include README.md
-include requirements.txt
-recursive-include octoprint_plotly_graph_lywsd03mmc/templates *
-recursive-include octoprint_plotly_graph_lywsd03mmc/static *
-recursive-include octoprint_plotly_graph_lywsd03mmc/translations *
+recursive-include octoprint_lywsd03mmc_plotly_graph/templates *
