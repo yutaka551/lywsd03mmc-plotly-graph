@@ -168,7 +168,7 @@ class PlotlyTempGraphLywsd03mmcPlugin(
     def get_update_information(self):
         return dict(
             plotly_temp_graph_lywsd03mmc=dict(
-                displayName="Plotly Temp Graph for LYWSD03MMC",
+                displayName="PlotlyTempGraph for LYWSD03MMC Plugin",
                 displayVersion=self._plugin_version,
 
                 # version check: github repository
