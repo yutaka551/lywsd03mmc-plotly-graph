@@ -1,2 +1,2 @@
 include README.md
-recursive-include octoprint_plotly_temp_graph_lywsd03mmc/templates *
+recursive-include octoprint_lywsd03mmc_plugin_for_plotly_temp_graph/templates *

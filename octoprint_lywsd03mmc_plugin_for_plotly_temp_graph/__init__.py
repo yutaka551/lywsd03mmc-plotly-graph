@@ -7,7 +7,7 @@ import time
 from lywsd03mmc import Lywsd03mmcClient
 
 
-class PlotlyTempGraphLywsd03mmcPlugin(
+class Lywsd03mmcPluginForPlotlyTempGraphPlugin(
     octoprint.plugin.SettingsPlugin,
     octoprint.plugin.TemplatePlugin,
     octoprint.plugin.StartupPlugin
@@ -37,7 +37,7 @@ class PlotlyTempGraphLywsd03mmcPlugin(
     # StartupPlugin mixin
 
     def on_after_startup(self):
-        self._logger.info("PlotlyTempGraph for LYWSD03MMC Plugin started")
+        self._logger.info("LYWSD03MMC Plugin for PlotlyTempGraph started")
         mac_address = self._settings.get(["mac_address"])
 
         if mac_address:
@@ -167,25 +167,25 @@ class PlotlyTempGraphLywsd03mmcPlugin(
 
     def get_update_information(self):
         return dict(
-            plotly_temp_graph_lywsd03mmc=dict(
-                displayName="PlotlyTempGraph for LYWSD03MMC Plugin",
+            lywsd03mmc_plugin_for_plotly_temp_graph=dict(
+                displayName="LYWSD03MMC Plugin for PlotlyTempGraph",
                 displayVersion=self._plugin_version,
 
                 # version check: github repository
                 type="github_release",
                 user="yutaka551",
-                repo="plotly-temp-graph-lywsd03mmc",
+                repo="lywsd03mmc-plugin-for-plotly-temp-graph",
                 current=self._plugin_version,
 
                 # update method: pip
-                pip="https://github.com/yutaka551/plotly-temp-graph-lywsd03mmc/archive/{target_version}.zip"
+                pip="https://github.com/yutaka551/lywsd03mmc-plugin-for-plotly-temp-graph/archive/{target_version}.zip"
             )
         )
 
 
-__plugin_name__ = "PlotlyTempGraph for LYWSD03MMC Plugin"
+__plugin_name__ = "LYWSD03MMC Plugin for PlotlyTempGraph"
 __plugin_pythoncompat__ = ">=3.7,<4"
-__plugin_implementation__ = PlotlyTempGraphLywsd03mmcPlugin()
+__plugin_implementation__ = Lywsd03mmcPluginForPlotlyTempGraphPlugin()
 __plugin_version__ = "0.1.0"
 
 __plugin_hooks__ = {
