@@ -1,5 +1,5 @@
 
-# OctoPrint-PlotlyGraph-LYWSD03MMC
+# LYWSD03MMC Plugin for PlotlyTempGraph
 
 
 OctoPrint plugin to add LYWSD03MMC temperature and humidity sensor data to PlotlyTempGraph.
@@ -42,7 +42,7 @@ Install via the bundled [Plugin Manager](https://docs.octoprint.org/en/master/bu
 or manually using this URL:
 
 ```
-https://github.com/yutaka551/lywsd03mmc-plotly-graph/archive/master.zip
+https://github.com/yutaka551/lywsd03mmc-plugin-for-plotly-temp-graph/archive/master.zip
 ```
 
 ### 3. Install System Dependencies
@@ -73,7 +73,7 @@ Look for devices named "LYWSD03MMC" and note the MAC address (e.g., `A4:C1:38:12
 ### 2. Configure the Plugin
 
 1. Open OctoPrint settings
-2. Navigate to the "LYWSD03MMC Sensor" section
+2. Navigate to the "LYWSD03MMC Plugin for PlotlyTempGraph" section
 3. Enter your sensor's MAC address
 4. Configure the update interval (default: 60 seconds)
 5. Choose which data to display:
@@ -87,7 +87,7 @@ Look for devices named "LYWSD03MMC" and note the MAC address (e.g., `A4:C1:38:12
 
 After configuration, restart OctoPrint. Check the logs (Settings → Logging) for messages like:
 ```
-LYWSD03MMC Plugin started
+LYWSD03MMC Plugin for PlotlyTempGraph started
 Starting sensor monitoring for MAC: A4:C1:38:12:34:56
 ```
 
@@ -148,4 +148,4 @@ Licensed under the MIT License. See the LICENSE file for details.
 
 ## Support
 
-For issues, feature requests, or questions, please use the [GitHub issue tracker](https://github.com/yutaka551/lywsd03mmc-plotly-graph/issues).
+For issues, feature requests, or questions, please use the [GitHub issue tracker](https://github.com/yutaka551/lywsd03mmc-plugin-for-plotly-temp-graph/issues).

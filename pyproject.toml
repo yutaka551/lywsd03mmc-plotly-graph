@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "OctoPrint-LYWSD03MMC-Plugin-for-PlotlyTempGraph"
+version = "0.1.0"
+description = "OctoPrint plugin that adds LYWSD03MMC temperature and humidity sensor data to PlotlyTempGraph"
+authors = [
+    {name = "yutaka551", email = "yutaka551butaman@gmail.com"}
+]
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {file = "LICENSE"}
+
+requires-python = ">=3.7, <4"
+
+# any additional requirements (besides OctoPrint) should be listed here
+dependencies = [
+    "lywsd03mmc>=0.1.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/yutaka551/lywsd03mmc-plugin-for-plotly-temp-graph"
+
+[project.entry-points."octoprint.plugin"]
+lywsd03mmc_plugin_for_plotly_temp_graph = "octoprint_lywsd03mmc_plugin_for_plotly_temp_graph"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = [
+    "octoprint_lywsd03mmc_plugin_for_plotly_temp_graph",
+    "octoprint_lywsd03mmc_plugin_for_plotly_temp_graph.*"
+]

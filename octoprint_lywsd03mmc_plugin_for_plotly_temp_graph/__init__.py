@@ -4,11 +4,11 @@ from __future__ import absolute_import
 import octoprint.plugin
 import threading
 import time
+from lywsd03mmc import Lywsd03mmcClient
 
 
-class PlotlyGraphLywsd03mmcPlugin(
+class Lywsd03mmcPluginForPlotlyTempGraph(
     octoprint.plugin.SettingsPlugin,
-    octoprint.plugin.AssetPlugin,
     octoprint.plugin.TemplatePlugin,
     octoprint.plugin.StartupPlugin
 ):
@@ -37,7 +37,7 @@ class PlotlyGraphLywsd03mmcPlugin(
     # StartupPlugin mixin
 
     def on_after_startup(self):
-        self._logger.info("LYWSD03MMC Plugin started")
+        self._logger.info("LYWSD03MMC Plugin for PlotlyTempGraph started")
         mac_address = self._settings.get(["mac_address"])
 
         if mac_address:
@@ -45,15 +45,6 @@ class PlotlyGraphLywsd03mmcPlugin(
             self._start_monitoring()
         else:
             self._logger.warning("No MAC address configured. Please configure the sensor MAC address in settings.")
-
-    # AssetPlugin mixin
-
-    def get_assets(self):
-        return dict(
-            js=[],
-            css=[],
-            less=[]
-        )
 
     # TemplatePlugin mixin
 
@@ -102,45 +93,34 @@ class PlotlyGraphLywsd03mmcPlugin(
             self._battery = None
             return
 
-        try:
-            # Import here to avoid issues if the library isn't installed
-            from lywsd03mmc import Lywsd03mmcClient
-
-            # Create or reuse client
-            if self._client is None:
-                self._logger.info("Connecting to sensor at %s", mac_address)
-                try:
-                    self._client = Lywsd03mmcClient(mac_address)
-                except Exception as e:
-                    self._logger.error("Failed to connect to sensor: %s", e)
-                    # Reset sensor data when connection fails
-                    self._temperature = None
-                    self._humidity = None
-                    self._battery = None
-                    return
-
-            # Read sensor data
+        # Create or reuse client
+        if self._client is None:
+            self._logger.info("Connecting to sensor at %s", mac_address)
             try:
-                data = self._client.data
-                self._temperature = data.temperature
-                self._humidity = data.humidity
-                self._battery = data.battery
-                self._last_update = time.time()
-
-                self._logger.debug("Sensor data - Temp: %.1f°C, Humidity: %d%%, Battery: %d%%",
-                                   self._temperature, self._humidity, self._battery)
+                self._client = Lywsd03mmcClient(mac_address)
             except Exception as e:
-                self._logger.error("Failed to read sensor data: %s", e)
-                # Reset client on data read error to force reconnection on next attempt
-                self._client = None
-                # Reset sensor data when read fails
+                self._logger.error("Failed to connect to sensor: %s", e)
+                # Reset sensor data when connection fails
                 self._temperature = None
                 self._humidity = None
                 self._battery = None
+                return
 
-        except ImportError:
-            self._logger.error("lywsd03mmc library not installed. Please install it: pip install lywsd03mmc")
-            # Reset sensor data when library is not available
+        # Read sensor data
+        try:
+            data = self._client.data
+            self._temperature = data.temperature
+            self._humidity = data.humidity
+            self._battery = data.battery
+            self._last_update = time.time()
+
+            self._logger.debug("Sensor data - Temp: %.1f°C, Humidity: %d%%, Battery: %d%%",
+                               self._temperature, self._humidity, self._battery)
+        except Exception as e:
+            self._logger.error("Failed to read sensor data: %s", e)
+            # Reset client on data read error to force reconnection on next attempt
+            self._client = None
+            # Reset sensor data when read fails
             self._temperature = None
             self._humidity = None
             self._battery = None
@@ -187,25 +167,25 @@ class PlotlyGraphLywsd03mmcPlugin(
 
     def get_update_information(self):
         return dict(
-            plotlyGraphLywsd03mmc=dict(
-                displayName="PlotlyGraph LYWSD03MMC Plugin",
+            lywsd03mmc_plugin_for_plotly_temp_graph=dict(
+                displayName="LYWSD03MMC Plugin for PlotlyTempGraph",
                 displayVersion=self._plugin_version,
 
                 # version check: github repository
                 type="github_release",
                 user="yutaka551",
-                repo="lywsd03mmc-plotly-graph",
+                repo="lywsd03mmc-plugin-for-plotly-temp-graph",
                 current=self._plugin_version,
 
                 # update method: pip
-                pip="https://github.com/yutaka551/lywsd03mmc-plotly-graph/archive/{target_version}.zip"
+                pip="https://github.com/yutaka551/lywsd03mmc-plugin-for-plotly-temp-graph/archive/{target_version}.zip"
             )
         )
 
 
-__plugin_name__ = "PlotlyGraph LYWSD03MMC Sensor"
+__plugin_name__ = "LYWSD03MMC Plugin for PlotlyTempGraph"
 __plugin_pythoncompat__ = ">=3.7,<4"
-__plugin_implementation__ = PlotlyGraphLywsd03mmcPlugin()
+__plugin_implementation__ = Lywsd03mmcPluginForPlotlyTempGraph()
 __plugin_version__ = "0.1.0"
 
 __plugin_hooks__ = {
