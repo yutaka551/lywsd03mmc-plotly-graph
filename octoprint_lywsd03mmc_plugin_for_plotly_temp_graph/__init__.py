@@ -10,7 +10,8 @@ from lywsd03mmc import Lywsd03mmcClient
 class Lywsd03mmcPluginForPlotlyTempGraph(
     octoprint.plugin.SettingsPlugin,
     octoprint.plugin.TemplatePlugin,
-    octoprint.plugin.StartupPlugin
+    octoprint.plugin.StartupPlugin,
+    octoprint.plugin.RestartNeedingPlugin
 ):
     def __init__(self):
         self._temperature = None
@@ -33,6 +34,26 @@ class Lywsd03mmcPluginForPlotlyTempGraph(
             humidity_label="LYWSD03MMC Humidity",
             battery_label="LYWSD03MMC Battery"
         )
+
+    def on_settings_save(self, data):
+        """Apply runtime changes immediately after saving plugin settings."""
+        old_mac_address = self._settings.get(["mac_address"])
+        octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
+        new_mac_address = self._settings.get(["mac_address"])
+
+        # Reconnect when MAC changes so new settings take effect immediately.
+        if new_mac_address != old_mac_address:
+            self._logger.info("MAC address changed. Restarting sensor monitoring.")
+            self._stop_monitoring()
+            self._client = None
+
+        if new_mac_address:
+            self._start_monitoring()
+        else:
+            self._stop_monitoring()
+            self._temperature = None
+            self._humidity = None
+            self._battery = None
 
     # StartupPlugin mixin
 
@@ -186,7 +207,7 @@ class Lywsd03mmcPluginForPlotlyTempGraph(
 __plugin_name__ = "LYWSD03MMC Plugin for PlotlyTempGraph"
 __plugin_pythoncompat__ = ">=3.7,<4"
 __plugin_implementation__ = Lywsd03mmcPluginForPlotlyTempGraph()
-__plugin_version__ = "0.1.0"
+__plugin_version__ = "0.1.1"
 
 __plugin_hooks__ = {
     "octoprint.comm.protocol.temperatures.received": (__plugin_implementation__.callback, 1),
