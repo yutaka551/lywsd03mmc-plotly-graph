@@ -35,6 +35,26 @@ class Lywsd03mmcPluginForPlotlyTempGraph(
             battery_label="LYWSD03MMC Battery"
         )
 
+    def on_settings_save(self, data):
+        """Apply runtime changes immediately after saving plugin settings."""
+        old_mac_address = self._settings.get(["mac_address"])
+        octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
+        new_mac_address = self._settings.get(["mac_address"])
+
+        # Reconnect when MAC changes so new settings take effect immediately.
+        if new_mac_address != old_mac_address:
+            self._logger.info("MAC address changed. Restarting sensor monitoring.")
+            self._stop_monitoring()
+            self._client = None
+
+        if new_mac_address:
+            self._start_monitoring()
+        else:
+            self._stop_monitoring()
+            self._temperature = None
+            self._humidity = None
+            self._battery = None
+
     # StartupPlugin mixin
 
     def on_after_startup(self):
