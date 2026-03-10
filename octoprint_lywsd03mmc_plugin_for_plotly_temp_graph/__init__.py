@@ -10,7 +10,8 @@ from lywsd03mmc import Lywsd03mmcClient
 class Lywsd03mmcPluginForPlotlyTempGraph(
     octoprint.plugin.SettingsPlugin,
     octoprint.plugin.TemplatePlugin,
-    octoprint.plugin.StartupPlugin
+    octoprint.plugin.StartupPlugin,
+    octoprint.plugin.RestartNeedingPlugin
 ):
     def __init__(self):
         self._temperature = None
